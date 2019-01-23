@@ -1,6 +1,7 @@
+const request = require('request-promise');
 const queue = require('./queue');
-const FULL_DEPS = 'fullDeps'; // redis key for hash of fully resolved deps by package key
 
+const FULL_DEPS = 'fullDeps'; // redis key for hash of fully resolved deps by package key
 
 async function fetchDepsOrRequestResolution(packageKey, client) {
   const cacheResult = await client.hgetAsync(FULL_DEPS, packageKey);
@@ -18,8 +19,19 @@ async function fetchDepsOrRequestResolution(packageKey, client) {
 }
 
 async function resolveDeps(packageKey, client) {
-  const result = { status: 'completed' };
+  const npmInfoUrl = `https://registry.npmjs.org/${packageKey}`;
+  let result;
+
+  try {
+    const npmInfo = await request(npmInfoUrl, {json: true});
+    result = { status: 'completed', dependencies: npmInfo.dependencies };
+  } catch (error) {
+    console.log(`Error: ${error}`);
+    result = { status: 'invalid', error };
+  }
+
   await client.hsetAsync(FULL_DEPS, packageKey, JSON.stringify(result));
+
   return result;
 }
 
