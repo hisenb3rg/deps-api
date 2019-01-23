@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.3",
     "express": "*",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "redis": "^2.8.0"
   }
 }

@@ -6,8 +6,12 @@ services:
     command: npm run start-dev
     environment:
       PORT: 3000
+      REDIS_HOST: redis
     ports:
       - "3000:3000"
     volumes:
       - /usr/src/app/node_modules
       - .:/usr/src/app:cached
+
+  redis:
+    image: redis
