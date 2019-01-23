@@ -3,6 +3,7 @@ version: "3.4"
 services:
   web:
     build: .
+    image: jurglic/deps-api
     command: npm run start-dev
     environment:
       PORT: 3000
@@ -12,6 +13,16 @@ services:
     volumes:
       - /usr/src/app/node_modules
       - .:/usr/src/app:cached
+
+  worker:
+    build: .
+    image: jurglic/deps-api
+    command: npm run worker-dev
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app:cached
+    environment:
+      REDIS_HOST: redis
 
   redis:
     image: redis

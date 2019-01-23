@@ -1,12 +1,6 @@
 const express = require('express');
-const redis = require('redis');
 const depsResolver = require('./app/depsResolver');
-var Promise = require('bluebird');
-
-// setup redis client
-const REDIS_HOST = process.env.REDIS_HOST;
-const client = redis.createClient({ host: REDIS_HOST });
-Promise.promisifyAll(redis);
+const client = require('./config/initRedisClient');
 
 // setup express app
 const app = express();

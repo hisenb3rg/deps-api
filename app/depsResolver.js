@@ -1,22 +1,29 @@
-const redis = require('redis');
-
+const queue = require('./queue');
 const FULL_DEPS = 'fullDeps'; // redis key for hash of fully resolved deps by package key
-const REQUESTS = 'requests';  // redis key for list of active resolution requests
+
 
 async function fetchDepsOrRequestResolution(packageKey, client) {
-  const reply = await client.hexistsAsync(FULL_DEPS, packageKey);
-  console.log(`Redis cache hit for ${packageKey}: ${reply}`);
+  const cacheResult = await client.hgetAsync(FULL_DEPS, packageKey);
+  console.log(`Redis cache for ${packageKey}: ${cacheResult}`);
 
-  if (reply) {
+  if (cacheResult) {
     // cache hit
-    return 'hit';
+    return JSON.parse(cacheResult);
+
   } else {
     // cache miss
-    await client.lpushAsync(REQUESTS, packageKey);
-    return 'miss';
+    await queue.pushRequest(packageKey, client);
+    return { status: 'in_progress' };
   }
+}
+
+async function resolveDeps(packageKey, client) {
+  const result = { status: 'completed' };
+  await client.hsetAsync(FULL_DEPS, packageKey, JSON.stringify(result));
+  return result;
 }
 
 module.exports = {
   fetchDepsOrRequestResolution,
+  resolveDeps,
 };

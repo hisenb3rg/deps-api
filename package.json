@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "worker": "node scripts/worker.js",
     "start-dev": "nodemon index.js",
-    "start": "node index.js"
+    "worker-dev": "nodemon scripts/worker.js"
   },
   "author": "",
   "license": "ISC",
