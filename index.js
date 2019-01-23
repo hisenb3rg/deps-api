@@ -6,9 +6,10 @@ const client = require('./config/initRedisClient');
 const app = express();
 const PORT = process.env.PORT;
 
-app.get('/deps', async (req, res) => {
-  const { package, version } = req.query;
+app.get('/deps/:package/:version', async (req, res) => {
+  const { package, version } = req.params;
   const result = await depsResolver.fetchDepsOrRequestResolution(`${package}/${version}`, client);
+  res.setHeader('Content-Type', 'application/json');
   res.send(result);
 });
 
