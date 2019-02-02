@@ -1,5 +1,8 @@
 # Dependencies API
 
+[![Known Vulnerabilities](https://snyk.io/test/github/jurglic/deps-api/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jurglic/deps-api?targetFile=package.json)
+
+
 This is (unfinished) proof of concept (or spike) for API that resolves npm
 package dependencies and returns them in a tree structure. It is not production
 code, it doesn't include tests, appropriate error handling, etc..
