@@ -7,7 +7,9 @@
     "start": "node index.js",
     "worker": "node scripts/worker.js",
     "start-dev": "nodemon index.js",
-    "worker-dev": "nodemon scripts/worker.js"
+    "worker-dev": "nodemon scripts/worker.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +19,8 @@
     "nodemon": "^1.18.9",
     "redis": "^2.8.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
-  }
+    "request-promise": "^4.2.2",
+    "snyk": "^1.189.0"
+  },
+  "snyk": true
 }
